@@ -18,7 +18,7 @@ api:
     startupPeriodSeconds: 10
   ingress:
     enabled: true
-    host: api.david-thoumas.takima.cloud
+    host: api.staging.david-thoumas.takima.cloud
     tls:
       enabled: true
 
@@ -31,7 +31,7 @@ front:
   replicaCount: 3
   ingress:
     enabled: true
-    host: www.david-thoumas.takima.cloud
+    host: www.staging.david-thoumas.takima.cloud
     tls:
       enabled: true
 

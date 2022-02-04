@@ -2,18 +2,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: front
-  labels:
-    app: front
+  name: {{ template "AppCtx.frontName" . }}-deployment
+  labels: {{ include "AppCtx.frontLabels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.front.replicaCount }}
   selector:
-    matchLabels:
-      app: front
+    matchLabels: {{ include "AppCtx.frontSelectorLabels" . | nindent 8 }}
   template:
     metadata:
-      labels:
-        app: front
+      labels: {{ include "AppCtx.frontLabels" . | nindent 10 }}
     spec:
       imagePullSecrets:
         - name: auth-master3-registry
@@ -33,6 +30,6 @@ spec:
           - name: API_URL
             valueFrom:
               configMapKeyRef:
-                name: front-config
+                name: {{ template "AppCtx.frontName" . }}-cm
                 key: API_URL
 {{- end }}

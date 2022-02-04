@@ -6,9 +6,10 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
 {{- if .Values.front.ingress.tls.enabled }}
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-staging
 {{- end }}
-  name: front
+  name: {{ template "AppCtx.frontName" . }}-ingress
+  labels: {{ include "AppCtx.frontLabels" . | nindent 4 }}
 spec:
   rules:
   - host: {{ .Values.front.ingress.host }}
@@ -16,7 +17,7 @@ spec:
       paths:
       - backend:
           service:
-            name: {{ .Values.front.serviceName }}
+            name: {{ template "AppCtx.frontName" . }}-service
             port:
               number: {{ .Values.front.servicePort }}
         path: /
@@ -25,7 +26,7 @@ spec:
   tls:
   - hosts:
       - {{ .Values.front.ingress.host }}
-    secretName: front-tls
+    secretName: {{ template "AppCtx.frontName" . }}-ingress-tls
     {{- end }} 
 {{- end }}
 {{- end }}
